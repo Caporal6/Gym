@@ -3,39 +3,49 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; 
 
 public class TestCollision : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _sliderPerso;
+
+    [SerializeField]
+    private GameObject _sliderObjectif;
+
     public string[] Sentences; // Tableau de chaînes de caractères pour stocker les phrases du dialogue
     public GameObject Button;
-    [SerializeField]
-    private GameObject _slider;
-    private Scrollbar _sliderComponent;
-    public TMPro.TextMeshProUGUI TextComponent;
+    private Scrollbar _sliderPersoComponent;
+    private Scrollbar _sliderObjectifComponent;
+    public  TMP_Text TextComponent;
     private int points = 0;
     private float elapsedTime = 0f;
+    private float elapsedTimeFunc = 0f;
+    private float elapsedTimeButton= 0f;
     private float _randomZone;
     private float _randomOffset;
+
 
     public bool rentrer = false;
 
     private void Start()
     {
-        _sliderComponent = _slider.GetComponent<Scrollbar>();
+        _sliderPersoComponent = _sliderPerso.GetComponent<Scrollbar>();
+        _sliderObjectifComponent = _sliderObjectif.GetComponent<Scrollbar>();
 
-        _randomZone = Random.Range(0f, 0.9f);
-        _randomOffset = _randomZone + 0.1f;
+        RandomZone();
 
-        Debug.Log(_randomZone);
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if(Input.GetKeyDown(KeyCode.E) && rentrer)
         {
-            _slider.SetActive(true);
-            _sliderComponent.value += 0.1f;
+            _sliderPerso.SetActive(true);
+            _sliderObjectif.SetActive(true);
+            _sliderPersoComponent.value += 0.1f;
 
             /*
             Dialogue.Instance.Sentences[0] = "Bonjour ! Je suis un PNJ !"; // Définit la première phrase du dialogue
@@ -44,20 +54,13 @@ public class TestCollision : MonoBehaviour
             */
         }
 
-        if (_sliderComponent.value >= _randomZone && _sliderComponent.value <= _randomOffset)
-        {
-            elapsedTime += Time.deltaTime; 
+        PointsCardio(1f);
 
-            if (elapsedTime >= 1f) 
-            {
-                points += 1; 
-                elapsedTime = 0f; 
-            }
-        }
+        ObjectifCardio(5f);
 
-        if (_slider.activeSelf && _sliderComponent.value > 0)
+        if (_sliderPerso.activeSelf && _sliderPersoComponent.value > 0)
         {
-            _sliderComponent.value -= 0.5f * Time.deltaTime;
+            _sliderPersoComponent.value -= 0.5f * Time.deltaTime;
         }
 
         TextComponent.text = $"Points : {points}";
@@ -66,6 +69,7 @@ public class TestCollision : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Button.SetActive(true);
+
         // Vérifie si le collider a le tag "Player"
         if (collision.CompareTag("Player"))
         {
@@ -76,9 +80,48 @@ public class TestCollision : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         Button.SetActive(false);
-        _slider.SetActive(false);
-        TextComponent
+        _sliderPerso.SetActive(false);
+        _sliderObjectif.SetActive(false);
+        _sliderPersoComponent.value = 0;
+
         rentrer = false;
     }
 
+
+    private void PointsCardio(float seconde)
+    {
+        if (_sliderPersoComponent.value >= (_randomZone - 0.05f) && _sliderPersoComponent.value <= _randomOffset)
+        {
+            elapsedTime += Time.deltaTime;
+
+            if (elapsedTime >= seconde)
+            {
+                points += 1;
+                elapsedTime = 0f;
+            }
+        }
+    }
+
+    private void ObjectifCardio(float seconde)
+    {
+        if (_sliderPersoComponent.value >= (_randomZone - 0.05f) && _sliderPersoComponent.value <= _randomOffset)
+        {
+            elapsedTimeFunc += Time.deltaTime;
+
+            if (elapsedTimeFunc >= seconde)
+            {
+                RandomZone();
+                elapsedTimeFunc = 0f;
+            }
+        }
+    }
+
+    private void RandomZone()
+    {
+        _randomZone = Random.Range(1, 9);
+        _randomOffset = _randomZone + 1;
+        _randomZone = _randomZone / 10f;
+        _randomOffset = _randomOffset / 10f;
+        _sliderObjectifComponent.value = _randomZone;
+    }
 }

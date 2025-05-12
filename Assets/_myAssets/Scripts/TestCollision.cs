@@ -21,7 +21,6 @@ public class TestCollision : MonoBehaviour
     private int points = 0;
     private float elapsedTime = 0f;
     private float elapsedTimeFunc = 0f;
-    private float elapsedTimeButton= 0f;
     private float _randomZone;
     private float _randomOffset;
 

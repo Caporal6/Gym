@@ -13,7 +13,7 @@ public class TestCollision : MonoBehaviour
     [SerializeField]
     private GameObject _sliderObjectif;
 
-    public string[] Sentences; // Tableau de chaînes de caractères pour stocker les phrases du dialogue
+    public string[] Sentences; // Tableau de chaï¿½nes de caractï¿½res pour stocker les phrases du dialogue
     public GameObject Button;
     private Scrollbar _sliderPersoComponent;
     private Scrollbar _sliderObjectifComponent;
@@ -47,9 +47,9 @@ public class TestCollision : MonoBehaviour
             _sliderPersoComponent.value += 0.1f;
 
             /*
-            Dialogue.Instance.Sentences[0] = "Bonjour ! Je suis un PNJ !"; // Définit la première phrase du dialogue
+            Dialogue.Instance.Sentences[0] = "Bonjour ! Je suis un PNJ !"; // Dï¿½finit la premiï¿½re phrase du dialogue
             Dialogue.Instance.StartDialogue();
-            Debug.Log("Collision avec le joueur détectée !");
+            Debug.Log("Collision avec le joueur dï¿½tectï¿½e !");
             */
         }
 
@@ -69,7 +69,7 @@ public class TestCollision : MonoBehaviour
     {
         Button.SetActive(true);
 
-        // Vérifie si le collider a le tag "Player"
+        // Vï¿½rifie si le collider a le tag "Player"
         if (collision.CompareTag("Player"))
         {
             rentrer = true; 
